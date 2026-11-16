@@ -1,0 +1,20 @@
+language: es_ES
+automatic-games: true
+game-interval-seconds: 300
+minimum-players: 1
+default-timeout-seconds: 45
+economy:
+  enabled: true
+  reward-multiplier: 1.0
+  minimum-reward: 1
+  maximum-reward: 1000000
+sounds:
+  enabled: true
+  correct: RANDOM_LEVELUP
+answers:
+  ignore-case: true
+  trim-spaces: true
+  wrong-answer-cooldown-seconds: 3
+statistics:
+  enabled: true
+debug: false
