@@ -1,0 +1,32 @@
+package com.brunojaeger.chatgames.manager;
+import cn.nukkit.Player; import cn.nukkit.utils.Config; import com.brunojaeger.chatgames.ChatGamesNK; import com.brunojaeger.chatgames.model.*;
+import java.io.File; import java.util.*; import java.util.concurrent.ThreadLocalRandom;
+/** Controla el ciclo de vida de las partidas. Solo puede existir una ronda activa por servidor. */
+public final class GameManager {
+ private final ChatGamesNK plugin; private final Map<String,GameDefinition> games=new LinkedHashMap<>(); private final Map<UUID,Long> wrongAnswerAt=new HashMap<>();
+ private GameDefinition activeDefinition; private Challenge activeChallenge; private long expiresAt,nextStartAt;
+ public GameManager(ChatGamesNK plugin){this.plugin=plugin;}
+ /** Descubre todos los YAML de games/ y convierte sus preguntas al modelo común Challenge. */
+ @SuppressWarnings("unchecked") public void loadGames(){games.clear();File dir=new File(plugin.getDataFolder(),"games");File[] files=dir.listFiles((d,n)->n.toLowerCase(Locale.ROOT).endsWith(".yml"));if(files==null)return;
+  for(File file:files)try{Config c=new Config(file,Config.YAML);if(!c.getBoolean("enabled",true))continue;List<Challenge> list=new ArrayList<>();Object raw=c.get("questions");
+   if(raw instanceof List<?>)for(Object item:(List<?>)raw)if(item instanceof Map<?,?>){Map<String,Object> q=(Map<String,Object>)item;String prompt=String.valueOf(q.getOrDefault("question",""));String answer=String.valueOf(q.getOrDefault("answer",""));List<String> options=new ArrayList<>();Object opts=q.get("options");if(opts instanceof List<?>)for(Object o:(List<?>)opts)options.add(String.valueOf(o));if(!prompt.isBlank()&&!answer.isBlank())list.add(new Challenge(prompt,answer,options));}
+   if(list.isEmpty()){plugin.getLogger().warning("Sin preguntas válidas: "+file.getName());continue;}String name=c.getString("name",file.getName().replace(".yml",""));
+   games.put(name.toLowerCase(Locale.ROOT),new GameDefinition(name,c.getString("type",name),c.getString("display-name",name),c.getInt("timeout-seconds",45),c.getDouble("reward",0),list));
+  }catch(Exception e){plugin.getLogger().warning("Error leyendo "+file.getName()+": "+e.getMessage());}scheduleNext();}
+ public void tick(){long now=System.currentTimeMillis();if(activeDefinition!=null&&now>=expiresAt)timeout();if(activeDefinition==null&&plugin.getConfig().getBoolean("automatic-games",true)&&now>=nextStartAt){if(plugin.getServer().getOnlinePlayers().size()>=Math.max(1,plugin.getConfig().getInt("minimum-players",1)))startRandomGame();else scheduleNext();}}
+ public boolean startGame(String name){GameDefinition d=games.get(name.toLowerCase(Locale.ROOT));if(d==null||activeDefinition!=null)return false;start(d);return true;}
+ public boolean startRandomGame(){if(games.isEmpty()||activeDefinition!=null)return false;List<GameDefinition> list=new ArrayList<>(games.values());start(list.get(ThreadLocalRandom.current().nextInt(list.size())));return true;}
+ private void start(GameDefinition d){activeDefinition=d;List<Challenge> list=d.getChallenges();activeChallenge=list.get(ThreadLocalRandom.current().nextInt(list.size()));expiresAt=System.currentTimeMillis()+d.getTimeoutSeconds()*1000L;wrongAnswerAt.clear();Map<String,String> p=Map.of("game",d.getDisplayName(),"question",activeChallenge.getQuestion());plugin.broadcast(plugin.getLanguage().get("game-start",p));for(String option:activeChallenge.getOptions())plugin.broadcast("§7"+option);if(plugin.getConfig().getBoolean("debug",false))plugin.getLogger().info("Partida iniciada: "+d.getName());}
+ /** Comprueba la respuesta sin interceptar conversaciones ajenas al minijuego. */
+ public boolean handleAnswer(Player player,String raw){if(activeDefinition==null)return false;String answer=normalize(raw),expected=normalize(activeChallenge.getAnswer());if(answer.equals(expected)){win(player);return true;}if(isOptionAttempt(answer)){long now=System.currentTimeMillis(),cd=plugin.getConfig().getInt("answers.wrong-answer-cooldown-seconds",3)*1000L,prev=wrongAnswerAt.getOrDefault(player.getUniqueId(),0L);if(now-prev<cd)player.sendMessage((plugin.getLanguage().get("prefix")+plugin.getLanguage().get("answer-cooldown")).replace('&','§'));wrongAnswerAt.put(player.getUniqueId(),now);return true;}return false;}
+ private boolean isOptionAttempt(String answer){for(String option:activeChallenge.getOptions()){String letter=option.isEmpty()?"":option.substring(0,1);if(answer.equalsIgnoreCase(letter)||answer.equalsIgnoreCase(option))return true;}return false;}
+ private String normalize(String value){String out=value==null?"":value;if(plugin.getConfig().getBoolean("answers.trim-spaces",true))out=out.trim();return plugin.getConfig().getBoolean("answers.ignore-case",true)?out.toLowerCase(Locale.ROOT):out;}
+ private void win(Player winner){GameDefinition d=activeDefinition;Challenge c=activeChallenge;double reward=Math.max(plugin.getConfig().getDouble("economy.minimum-reward",1),Math.min(plugin.getConfig().getDouble("economy.maximum-reward",1000000),d.getReward()*plugin.getConfig().getDouble("economy.reward-multiplier",1)));
+  boolean economyEnabled=plugin.getConfig().getBoolean("economy.enabled",true),paid=!economyEnabled||plugin.getEconomy().reward(winner,reward);if(paid&&plugin.getConfig().getBoolean("statistics.enabled",true))plugin.getStatistics().recordWin(winner.getUniqueId(),economyEnabled?reward:0);
+  plugin.broadcast(plugin.getLanguage().get("game-win",Map.of("player",winner.getName(),"answer",c.getAnswer(),"reward",paid&&economyEnabled?String.format(Locale.US,"%.2f",reward):"0")));if(plugin.getConfig().getBoolean("sounds.enabled",true))plugin.playCorrectSound(winner);clear();}
+ private void timeout(){plugin.broadcast(plugin.getLanguage().get("game-timeout",Map.of("answer",activeChallenge.getAnswer())));clear();}
+ public void stopGame(){if(activeDefinition==null)return;clear();}
+ private void clear(){activeDefinition=null;activeChallenge=null;wrongAnswerAt.clear();scheduleNext();}
+ private void scheduleNext(){nextStartAt=System.currentTimeMillis()+Math.max(10,plugin.getConfig().getInt("game-interval-seconds",300))*1000L;}
+ public boolean isActive(){return activeDefinition!=null;} public Collection<GameDefinition> getGames(){return Collections.unmodifiableCollection(games.values());}
+}
