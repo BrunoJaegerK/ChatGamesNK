@@ -1,0 +1,17 @@
+name: reaction
+type: reaction
+enabled: true
+display-name: "&cReacción"
+timeout-seconds: 30
+reward: 20
+questions:
+  - question: "&fEscribe exactamente: &eMINECRAFT"
+    answer: "MINECRAFT"
+  - question: "&fEscribe exactamente: &eCHATGAMES"
+    answer: "CHATGAMES"
+  - question: "&fEscribe exactamente: &eDIAMANTE"
+    answer: "DIAMANTE"
+  - question: "&fEscribe exactamente: &eNETHER"
+    answer: "NETHER"
+  - question: "&fEscribe exactamente: &eVICTORIA"
+    answer: "VICTORIA"
