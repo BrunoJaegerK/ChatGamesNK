@@ -1,0 +1,17 @@
+name: math
+type: math
+enabled: true
+display-name: "&eMatemáticas"
+timeout-seconds: 45
+reward: 25
+questions:
+  - question: "&e12 + 8 = ?"
+    answer: "20"
+  - question: "&e25 - 7 = ?"
+    answer: "18"
+  - question: "&e6 x 7 = ?"
+    answer: "42"
+  - question: "&e144 / 12 = ?"
+    answer: "12"
+  - question: "&e(9 x 8) - 10 = ?"
+    answer: "62"
