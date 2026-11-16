@@ -1,0 +1,17 @@
+name: trivia
+type: trivia
+enabled: true
+display-name: "&bTrivia"
+timeout-seconds: 50
+reward: 35
+questions:
+  - question: "&f¿Qué dimensión contiene ciudades del End?"
+    answer: "End"
+  - question: "&f¿Qué mineral se necesita para fabricar una mesa de encantamientos?"
+    answer: "Diamante"
+  - question: "&f¿Cuántos ojos puede tener un marco del End?"
+    answer: "12"
+  - question: "&f¿Qué criatura explota al acercarse al jugador?"
+    answer: "Creeper"
+  - question: "&f¿Qué objeto se usa para domar lobos?"
+    answer: "Hueso"
