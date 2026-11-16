@@ -5,13 +5,13 @@ display-name: "&dPalabras"
 timeout-seconds: 50
 reward: 30
 questions:
-  - question: "&fOrdena las letras: &eN O I D A M T E"
+  - question: "&fOrdena las letras: &eN A T I D E M A"
     answer: "Diamante"
   - question: "&fOrdena las letras: &eR E P E E R C"
     answer: "Creeper"
   - question: "&fOrdena las letras: &eA T O B"
     answer: "Bota"
-  - question: "&fOrdena las letras: &eR O D A M A"
+  - question: "&fOrdena las letras: &eU R A M A D R A"
     answer: "Armadura"
   - question: "&fOrdena las letras: &eA R D E I P"
     answer: "Piedra"
