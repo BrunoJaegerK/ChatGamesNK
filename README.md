@@ -17,9 +17,23 @@ Plugin de minijuegos de chat para **Nukkit PetteriM1 Edition**, inspirado funcio
 - EconomyAPI 2.x para entregar recompensas.
 
 ## Compilar
-mvn clean package
 
-El artefacto esperado es target/ChatGamesNK.jar.
+El proyecto depende de la API de Nukkit PetteriM1 Edition. Primero instala esa API en el repositorio Maven local desde la rama `release`:
+
+```bash
+git clone --branch release https://github.com/BrunoJaegerK/NukkitPetteriM1Edition.git
+cd NukkitPetteriM1Edition
+mvn -DskipTests install
+cd ..
+```
+
+Después, desde la carpeta raíz de ChatGamesNK:
+
+```bash
+mvn clean package
+```
+
+El artefacto esperado es `target/ChatGamesNK.jar`. El workflow de GitHub Actions realiza ambos pasos automáticamente. EconomyAPI se integra por reflexión en tiempo de ejecución, por lo que no hace falta descargar su JAR para compilar; sí debe estar instalado en el servidor para pagar recompensas.
 
 ## Instalar
 1. Coloca ChatGamesNK.jar y EconomyAPI en plugins/.
