@@ -1,0 +1,19 @@
+name: ChatGamesNK
+main: com.brunojaeger.chatgames.ChatGamesNK
+version: "1.0.0"
+api: ["1.0.0"]
+author: BrunoJaegerK
+description: Minijuegos de chat configurables para Nukkit PetteriM1 Edition
+softdepend: [EconomyAPI]
+commands:
+  chatgames:
+    description: Administra los minijuegos
+    usage: "/chatgames <start|stop|list|reload|stats>"
+    aliases: [cg]
+permissions:
+  chatgames.admin:
+    description: Administración completa
+    default: op
+  chatgames.stats:
+    description: Consultar estadísticas
+    default: true
