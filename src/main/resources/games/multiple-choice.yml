@@ -1,0 +1,22 @@
+name: multiple-choice
+type: multiple-choice
+enabled: true
+display-name: "&aOpción múltiple"
+timeout-seconds: 50
+reward: 30
+questions:
+  - question: "&f¿Cuál es el mineral más raro de estos?"
+    options: ["A) Carbón", "B) Esmeralda", "C) Cobre", "D) Hierro"]
+    answer: "B"
+  - question: "&f¿Cuál de estos mobs es hostil?"
+    options: ["A) Vaca", "B) Aldeano", "C) Creeper", "D) Oveja"]
+    answer: "C"
+  - question: "&f¿Qué herramienta sirve para picar obsidiana?"
+    options: ["A) Pico de diamante", "B) Pala", "C) Hacha", "D) Azada"]
+    answer: "A"
+  - question: "&f¿Qué objeto permite respirar bajo el agua?"
+    options: ["A) Brújula", "B) Concha de nautilo", "C) Tridente", "D) Caña"]
+    answer: "B"
+  - question: "&f¿Cuál es el resultado de 9 x 9?"
+    options: ["A) 72", "B) 81", "C) 99", "D) 90"]
+    answer: "B"
