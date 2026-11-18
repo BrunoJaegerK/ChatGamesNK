@@ -1,5 +1,16 @@
 # ChatGamesNK
 
+<p align="center">
+  <img src="https://img.shields.io/badge/Minecraft-Bedrock%20Edition-43A047?style=for-the-badge&logo=minecraft&logoColor=white" alt="Minecraft Bedrock Edition">
+  <img src="https://img.shields.io/badge/Server-NukkitPetteriM1Edition-2196F3?style=for-the-badge" alt="NukkitPetteriM1Edition">
+  <img src="https://img.shields.io/badge/Java-17-orange?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java 17">
+  <img src="https://img.shields.io/badge/Build-Maven-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white" alt="Maven">
+</p>
+
+<p align="center"><b>Plugin de minijuegos de chat para NukkitPetteriM1Edition, con rondas automáticas, preguntas editables, recompensas y estadísticas persistentes.</b></p>
+
+---
+
 Plugin de minijuegos de chat para **Nukkit PetteriM1 Edition**, inspirado funcionalmente en [RareHyperIonYT/ChatGames](https://github.com/RareHyperIonYT/ChatGames) y adaptado a Nukkit.
 
 ## Características
@@ -65,3 +76,17 @@ La primera versión usa YAML para las estadísticas. No necesita MongoDB, MySQL,
 - Referencia funcional: https://github.com/RareHyperIonYT/ChatGames
 - Economía: https://cloudburstmc.org/resources/economyapi.14/
 - Autor: BrunoJaegerK.
+
+## ℹ️ About
+
+Plugin de minijuegos de chat para NukkitPetteriM1Edition, con rondas automáticas, preguntas editables, recompensas y estadísticas persistentes.
+
+- **Autor:** BrunoJaegerK
+- **Servidor objetivo:** NukkitPetteriM1Edition (Minecraft Bedrock)
+- **Repositorio:** https://github.com/BrunoJaegerK/ChatGamesNK
+
+## 📜 Licencia
+
+Este proyecto se distribuye bajo **Apache-2.0**. Puedes utilizarlo, modificarlo y redistribuirlo respetando los términos de la licencia, conservando los avisos de copyright y atribución aplicables. En el caso de GPL-3.0, las versiones modificadas distribuidas deben permanecer bajo GPL-3.0 y proporcionar el código fuente correspondiente.
+
+Consulta el archivo [LICENSE](LICENSE) para leer el texto completo.
